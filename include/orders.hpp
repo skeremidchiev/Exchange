@@ -1,13 +1,13 @@
-#ifndef ORDER_H
-#define ORDER_H
+#ifndef ORDER_HPP
+#define ORDER_HPP
 
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <iomanip>
-
 #include <unordered_map>
 #include <memory>
 #include <string>
+
+#include <nlohmann/json.hpp>
 
 using namespace std;
 using json = nlohmann::json;
@@ -21,14 +21,13 @@ struct Order
     };
 
     // ctor
-    Order(double p, double v, double t, Order_t ot)
-        : price{p}, volume(v), time{t}, orderType(ot)
+    Order(double p, double v, double id, Order_t ot)
+        : price{p}, volume(v), id{id}, orderType(ot)
     {
     }
 
-    // maybe long double is better option
-    // but double is enough for testing
-    double price, volume, time;
+    // for Kraken id is price, Bitfinex is real id
+    double price, volume, id;
     Order_t orderType;
 
     friend ostream &operator<<(ostream &, const Order &);
@@ -41,18 +40,6 @@ struct CustomKey
 
     bool operator==(const CustomKey &) const;
 };
-
-// forced to add the namespace due to explicit specialization
-namespace std
-{
-
-template <>
-struct hash<CustomKey>
-{
-    size_t operator()(const CustomKey &k) const;
-};
-
-} // namespace std
 
 class Orders
 {
@@ -74,10 +61,10 @@ private:
     typedef map<CustomKey, Order, Greater> Map_t;
 
     // hashOrders is used for fast access
-    unordered_map<CustomKey, Map_t::iterator> hashOrders;
+    unordered_map<double, Map_t::iterator> hashOrders;
 
     // ordered map
     Map_t orders;
 };
 
-#endif // ORDER_H
+#endif // ORDER_HPP

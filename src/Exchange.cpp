@@ -1,6 +1,7 @@
 #include "Exchange.h"
 
 Exchange::Exchange(const string &apiUrl, const string &apiData)
+    : orders{}
 {
     connect(apiUrl, apiData);
 }
@@ -22,7 +23,7 @@ void Exchange::connect(const string &apiUrl, const string &apiData)
 void Exchange::receive()
 {
     const uint initialMsgs = 3;
-    const uint limit = initialMsgs + 5; // change it to capture more msgs
+    const uint limit = initialMsgs + 10; // change it to capture more msgs
 
     uint i = 0;
     bool ok = true;
@@ -34,14 +35,22 @@ void Exchange::receive()
             .then([](websocket_incoming_message in_msg) {
                 return in_msg.extract_string();
             })
-            .then([&ok](string body) {
+            .then([this](string body) {
                 cout << "BODY: " << body << "\n\n";
-                auto json = json::parse(body);
+                toOrder(json::parse(body));
             })
             .wait();
 
         i++;
     }
+
+    orders.print();
+}
+
+double toDouble(const json &node)
+{
+    string str = node.dump();
+    return stod(str.substr(1, str.size() - 2));
 }
 
 bool Exchange::toOrder(const json &jsonMsg)
@@ -67,44 +76,59 @@ bool Exchange::toOrder(const json &jsonMsg)
         jsonMsg[2] == "book-10" &&
         jsonMsg[3] == "XBT/USD")
     {
-        cout << jsonMsg[1]["as"] << "\n\n";
-        auto ask = jsonMsg[1]["as"];
+        cout << "OK" << endl;
 
-        for (auto it = ask.begin(); it != ask.end(); ++it)
+        // initial book
+        if (jsonMsg[1].find("as") != jsonMsg[1].end() && jsonMsg[1].find("bs") != jsonMsg[1].end())
         {
-            std::cout << *it << '\n';
+            auto ask = jsonMsg[1]["as"];
+            for (auto it = ask.begin(); it != ask.end(); ++it)
+            {
+                double price = toDouble((*it)[0]);
+                double volume = toDouble((*it)[1]);
+                double time = toDouble((*it)[2]);
+                orders.insert(price, volume, time, Order::ASK);
+            };
 
-            Order t{*it, Order::ASK};
-            auto keyPair = OrdersKey_t{t.price, t.orderType};
-            orders.insert(
-                pair<OrdersKey_t, Order>(keyPair, t));
+            auto bid = jsonMsg[1]["bs"];
 
-            cout << t << "\n";
-        };
+            for (json::iterator it = bid.begin(); it != bid.end(); ++it)
+            {
+                double price = toDouble((*it)[0]);
+                double volume = toDouble((*it)[1]);
+                double time = toDouble((*it)[2]);
+                orders.insert(price, volume, time, Order::BID);
+            };
 
-        cout << jsonMsg[1]["bs"] << "\n\n";
+            return true;
+        }
 
-        auto bid = jsonMsg[1]["bs"];
-
-        for (json::iterator it = bid.begin(); it != bid.end(); ++it)
+        if (jsonMsg[1].find("a") != jsonMsg[1].end())
         {
-            std::cout << *it << '\n';
+            auto ask = jsonMsg[1]["a"];
+            for (auto it = ask.begin(); it != ask.end(); ++it)
+            {
+                double price = toDouble((*it)[0]);
+                double volume = toDouble((*it)[1]);
+                double time = toDouble((*it)[2]);
+                orders.insert(price, volume, time, Order::ASK);
+            };
 
-            Order t{*it, Order::BID};
-            auto keyPair = OrdersKey_t{t.price, t.orderType};
-            orders.insert(
-                pair<OrdersKey_t, Order>(keyPair, t));
+            return true;
+        }
 
-            cout << t << "\n";
-        };
-
-        for (auto it = orders.begin(); it != orders.end(); it++)
+        if (jsonMsg[1].find("b") != jsonMsg[1].end())
         {
-            auto keyPair = it->first;
-            cout << keyPair.first << " " << keyPair.second // string (key)
-                 << "\t:\t"
-                 << it->second // string's value
-                 << std::endl;
+            auto ask = jsonMsg[1]["b"];
+            for (auto it = ask.begin(); it != ask.end(); ++it)
+            {
+                double price = toDouble((*it)[0]);
+                double volume = toDouble((*it)[1]);
+                double time = toDouble((*it)[2]);
+                orders.insert(price, volume, time, Order::BID);
+            };
+
+            return true;
         }
     }
 }

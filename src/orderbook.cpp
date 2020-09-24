@@ -6,6 +6,7 @@ void Orderbook::msg_received(Exchange &source)
     // aggregation of the data is not a cheap operation
     // complexity of such aproach is really high O(n*log n)
     // this will get slower with more elements in the structure
+    // not sure if this is the goal of the task???
     auto ords = source.getOrders().getSortedOrders();
     for (auto i = ords.begin(); i != ords.end(); i++)
     {
@@ -19,6 +20,7 @@ void Orderbook::msg_received(Exchange &source)
             askOrders.insert(make_pair(data.price, data.volume));
         }
     }
+
     print();
 }
 

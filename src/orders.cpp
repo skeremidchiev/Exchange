@@ -44,8 +44,8 @@ void Orders::insert(double price, double volume, double id, Order::Order_t ot)
     // delete item - element must exist or something is wrong with API
     if (volume == 0.0)
     {
-        orders.erase(hashOrders[id]); // delete from map (complexity - O(log n))
-        hashOrders.erase(id);         // delete from unordered map (complexity - O(1))
+        orders.erase(hashOrders[id]->first); // delete from map (complexity - O(log n))
+        hashOrders.erase(id);                // delete from unordered map (complexity - O(1))
     }
     else if (hashOrders.find(id) != hashOrders.end()) // find (complexity -best case O(1), worst O(n))
     {
@@ -60,6 +60,7 @@ void Orders::insert(double price, double volume, double id, Order::Order_t ot)
 
 void Orders::print()
 {
+    cout << "\nORDERS: " << endl;
     for (auto it = orders.begin(); it != orders.end(); it++)
     {
         auto key = it->first;
@@ -69,13 +70,16 @@ void Orders::print()
              << std::endl;
     }
 
+    cout << "\nHASH ORDERS: " << endl;
     for (auto it = hashOrders.begin(); it != hashOrders.end(); it++)
     {
         auto key = it->first;
-        cout << key   // string (key)
-             << " : " // string's value
+        auto val = it->second;
+        cout << key                                             // string (key)
+             << " : "                                           // string's value
+             << val->first.value << " " << val->first.orderType // string (key)
+             << " : "
+             << val->second // string's value
              << std::endl;
     }
-
-    cout << "out of print" << endl;
 }

@@ -18,7 +18,6 @@ struct Observable
         if (m_observer != nullptr)
         {
             m_observer->msg_received(source);
-            cout << "msg sent" << endl;
         }
     }
     void subscribe(Observer<T> &observer)

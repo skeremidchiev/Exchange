@@ -14,6 +14,6 @@ public:
     void print();
 
 private:
-    set<pair<double, double>, greater<pair<double, double>>> bidOrders;
-    set<pair<double, double>, greater<pair<double, double>>> askOrders;
+    map<double, double, greater<double>> bidOrders;
+    map<double, double, greater<double>> askOrders;
 };

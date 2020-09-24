@@ -32,6 +32,10 @@ bool Orders::Greater::operator()(
     return a.value > b.value; // && a.orderType < b.orderType;
 }
 
+// base case scenario:
+// new - O(log n)
+// update - O(1)
+// delete - O(log n)
 void Orders::insert(double price, double volume, double id, Order::Order_t ot)
 {
     Order order{price, volume, id, ot};
@@ -64,4 +68,14 @@ void Orders::print()
              << it->second // string's value
              << std::endl;
     }
+
+    for (auto it = hashOrders.begin(); it != hashOrders.end(); it++)
+    {
+        auto key = it->first;
+        cout << key   // string (key)
+             << " : " // string's value
+             << std::endl;
+    }
+
+    cout << "out of print" << endl;
 }

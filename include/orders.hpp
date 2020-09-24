@@ -45,7 +45,11 @@ class Orders
 {
 public:
     Orders() : orders{}, hashOrders{} {}
-    ~Orders() {}
+    ~Orders()
+    {
+        orders.clear();
+        hashOrders.clear();
+    }
 
     void insert(double, double, double, Order::Order_t);
 

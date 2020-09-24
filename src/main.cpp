@@ -9,6 +9,7 @@ int main()
     //     10};
 
     // kr.receive();
+
     {
         Bitfinex bf{
             "wss://api.bitfinex.com/ws/2",
@@ -17,7 +18,6 @@ int main()
 
         bf.receive();
     }
-    cout << "outside" << endl;
 
     return 0;
 }

@@ -11,6 +11,7 @@ Bitfinex::Bitfinex(
 
 bool Bitfinex::parse(const json &jsonMsg)
 {
+
     // drop status msgs and error msg
     if (jsonMsg.find("event") != jsonMsg.end())
     {
@@ -18,7 +19,6 @@ bool Bitfinex::parse(const json &jsonMsg)
         {
             chainID = jsonMsg["chanId"];
         }
-
         return false;
     }
 
@@ -29,7 +29,7 @@ bool Bitfinex::parse(const json &jsonMsg)
             return (volume > 0) ? Order::Order_t::BID : Order::Order_t::ASK;
         };
 
-        auto insert = [=](json js) {
+        auto insert = [&](const json &js) {
             double id = js[0];
             double price = js[1];
             double volume = js[2];

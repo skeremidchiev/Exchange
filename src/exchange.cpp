@@ -32,7 +32,6 @@ void Exchange::receive()
                 return in_msg.extract_string();
             })
             .then([this](string body) {
-                // cout << "BODY: " << body << "\n\n";
                 parse(json::parse(body));
             })
             .wait();

@@ -3,6 +3,8 @@
 
 #include "orders.hpp"
 
+// issues in websocket - cpprest/ws_client.h
+// exception on closing
 #include <cpprest/ws_client.h>
 
 using namespace web;

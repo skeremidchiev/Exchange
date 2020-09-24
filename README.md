@@ -14,3 +14,12 @@ https://github.com/nlohmann/json
   - cmake ..
   - make
   - make install
+  
+## How to build & run:
+  - mkdir build && cd build
+  - cmake ..
+  - make
+  - ./../bin/exchange
+  
+## Known issues:
+  * websocket is timeouting (assume maximum number of request per minute reached)

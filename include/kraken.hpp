@@ -1,5 +1,4 @@
-#ifndef KRAKEN_HPP
-#define KRAKEN_HPP
+#pragma once
 
 #include "exchange.hpp"
 #include "utils.hpp"
@@ -14,5 +13,3 @@ private:
     bool parse(const json &);
     bool jsonToOrders(const json &, const string &, Order::Order_t orderType);
 };
-
-#endif // KRAKEN_HPP

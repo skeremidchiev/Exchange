@@ -24,7 +24,7 @@ bool CustomKey::operator==(const CustomKey &other) const
 /* ******************************
  * Orders
  * ****************************** */
-bool Orders::Greater::operator()(
+bool Greater::operator()(
     const CustomKey &a,
     const CustomKey &b) const
 {

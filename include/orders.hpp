@@ -1,5 +1,4 @@
-#ifndef ORDER_HPP
-#define ORDER_HPP
+#pragma once
 
 #include <iostream>
 #include <iomanip>
@@ -41,6 +40,13 @@ struct CustomKey
     bool operator==(const CustomKey &) const;
 };
 
+struct Greater
+{
+    // ordered from highest ask to lowest bid - asks always on top?
+    bool operator()(const CustomKey &a, const CustomKey &b) const;
+};
+typedef map<CustomKey, Order, Greater> Map_t;
+
 class Orders
 {
 public:
@@ -53,22 +59,15 @@ public:
 
     void insert(double, double, double, Order::Order_t);
 
-    // TODO: remove
+    Map_t getSortedOrders() { return orders; }
+
+    // helper method
     void print();
 
 private:
-    struct Greater
-    {
-        // ordered from highest ask to lowest bid - asks always on top?
-        bool operator()(const CustomKey &a, const CustomKey &b) const;
-    };
-    typedef map<CustomKey, Order, Greater> Map_t;
-
     // hashOrders is used for fast access
     unordered_map<double, Map_t::iterator> hashOrders;
 
     // ordered map
     Map_t orders;
 };
-
-#endif // ORDER_HPP

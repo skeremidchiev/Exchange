@@ -1,23 +1,28 @@
 #include "kraken.hpp"
 #include "bitfinex.hpp"
+#include "orderbook.hpp"
 
 int main()
 {
-    // Kraken kr{
-    //     "wss://ws.kraken.com/",
-    //     "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 25}, \"pair\":[\"BTC/USD\"]}",
-    //     10};
+    Orderbook ob{};
 
-    // kr.receive();
+    Kraken kr{
+        "wss://ws.kraken.com/",
+        "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 25}, \"pair\":[\"BTC/USD\"]}",
+        10};
 
-    {
-        Bitfinex bf{
-            "wss://api.bitfinex.com/ws/2",
-            "{\"event\":\"subscribe\", \"channel\":\"book\", \"pair\":\"tBTCUSD\", \"prec\":\"R0\", \"len\":\"25\"}",
-            10};
+    Bitfinex bf{
+        "wss://api.bitfinex.com/ws/2",
+        "{\"event\":\"subscribe\", \"channel\":\"book\", \"pair\":\"tBTCUSD\", \"prec\":\"R0\", \"len\":\"25\"}",
+        10};
 
-        bf.receive();
-    }
+    kr.subscribe(ob);
+    bf.subscribe(ob);
+
+    kr.receive();
+    bf.receive();
+
+    cout << "DONE" << endl;
 
     return 0;
 }

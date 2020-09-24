@@ -11,7 +11,6 @@ Bitfinex::Bitfinex(
 
 bool Bitfinex::parse(const json &jsonMsg)
 {
-
     // drop status msgs and error msg
     if (jsonMsg.find("event") != jsonMsg.end())
     {

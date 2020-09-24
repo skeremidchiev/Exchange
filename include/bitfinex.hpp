@@ -1,5 +1,4 @@
-#ifndef BITFINEX_HPP
-#define BITFINEX_HPP
+#pragma once
 
 #include "exchange.hpp"
 #include "utils.hpp"
@@ -15,5 +14,3 @@ private:
 
     int chainID;
 };
-
-#endif // BITFINEX_HPP

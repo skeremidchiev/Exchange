@@ -41,15 +41,17 @@ void Orders::insert(double price, double volume, double id, Order::Order_t ot)
     Order order{price, volume, id, ot};
     CustomKey key{price, ot};
 
-    // delete item - element must exist or something is wrong with API
-    if (volume == 0.0)
+    if (hashOrders.find(id) != hashOrders.end()) // find (complexity -best case O(1), worst O(n))
     {
-        orders.erase(hashOrders[id]->first); // delete from map (complexity - O(log n))
-        hashOrders.erase(id);                // delete from unordered map (complexity - O(1))
-    }
-    else if (hashOrders.find(id) != hashOrders.end()) // find (complexity -best case O(1), worst O(n))
-    {
-        hashOrders[id]->second = order; // update should be linear
+        if (volume == 0.0)
+        {
+            orders.erase(key);    // delete from map (complexity - O(log n))
+            hashOrders.erase(id); // delete from unordered map (complexity - O(1))
+        }
+        else
+        {
+            hashOrders[id]->second = order; // update should be linear
+        }
     }
     else // new
     {

@@ -8,7 +8,7 @@ int main()
 
     Kraken kr{
         "wss://ws.kraken.com/",
-        "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 25}, \"pair\":[\"BTC/USD\"]}",
+        "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 10}, \"pair\":[\"BTC/USD\"]}",
         10};
     kr.subscribe(ob);
 

@@ -23,7 +23,7 @@ bool Kraken::parse(const json &jsonMsg)
         return false;
     }
 
-    // all this data checks are hard coded only for test
+    // all this data checks are hard coded
     if (jsonMsg.size() == 4 &&
         jsonMsg[0] == 270 &&
         // jsonMsg[2] == "book-25" &&

@@ -50,7 +50,7 @@ void Orders::insert(double price, double volume, double id, Order::Order_t ot)
         }
         else
         {
-            hashOrders[id]->second = order; // update should be linear
+            hashOrders[id]->second = order; // update (complexity - O(1))
         }
     }
     else // new
@@ -66,9 +66,9 @@ void Orders::print()
     for (auto it = orders.begin(); it != orders.end(); it++)
     {
         auto key = it->first;
-        cout << key.value << " " << key.orderType // string (key)
+        cout << key.value << " " << key.orderType
              << " : "
-             << it->second // string's value
+             << it->second
              << std::endl;
     }
 
@@ -77,11 +77,11 @@ void Orders::print()
     {
         auto key = it->first;
         auto val = it->second;
-        cout << key                                             // string (key)
-             << " : "                                           // string's value
-             << val->first.value << " " << val->first.orderType // string (key)
+        cout << key
              << " : "
-             << val->second // string's value
+             << val->first.value << " " << val->first.orderType
+             << " : "
+             << val->second
              << std::endl;
     }
 }

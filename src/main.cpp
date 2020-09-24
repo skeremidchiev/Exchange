@@ -6,16 +6,10 @@ int main()
 {
     Orderbook ob{};
 
-    Kraken kr{
-        "wss://ws.kraken.com/",
-        "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 25}, \"pair\":[\"BTC/USD\"]}",
-        10};
+    Kraken kr{10};
     kr.subscribe(ob);
 
-    Bitfinex bf{
-        "wss://api.bitfinex.com/ws/2",
-        "{\"event\":\"subscribe\", \"channel\":\"book\", \"pair\":\"tBTCUSD\", \"prec\":\"R0\", \"len\":\"25\"}",
-        10};
+    Bitfinex bf{10};
     bf.subscribe(ob);
 
     kr.receive();

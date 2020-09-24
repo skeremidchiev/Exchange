@@ -1,11 +1,12 @@
 #include "bitfinex.hpp"
 
 Bitfinex::Bitfinex(
-    const string &apiUrl,
-    const string &apiData,
     int msgLimit,
     int initialMsgCount)
-    : Exchange(apiUrl, apiData, msgLimit + initialMsgCount)
+    : Exchange(
+          "wss://api.bitfinex.com/ws/2",
+          "{\"event\":\"subscribe\", \"channel\":\"book\", \"pair\":\"tBTCUSD\", \"prec\":\"R0\", \"len\":\"25\"}",
+          msgLimit + initialMsgCount)
 {
 }
 

@@ -1,11 +1,12 @@
 #include "kraken.hpp"
 
 Kraken::Kraken(
-    const string &apiUrl,
-    const string &apiData,
     int msgLimit,
     int initialMsgCount)
-    : Exchange(apiUrl, apiData, msgLimit + initialMsgCount)
+    : Exchange(
+          "wss://ws.kraken.com/",
+          "{\"event\":\"subscribe\", \"subscription\":{\"name\":\"book\", \"depth\": 25}, \"pair\":[\"BTC/USD\"]}",
+          msgLimit + initialMsgCount)
 {
 }
 

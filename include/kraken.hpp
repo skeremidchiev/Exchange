@@ -6,7 +6,7 @@
 class Kraken : public Exchange
 {
 public:
-    Kraken(const string &, const string &, int, int = 3);
+    Kraken(int = 10, int = 3);
     virtual ~Kraken() {}
 
 private:

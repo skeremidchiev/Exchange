@@ -6,7 +6,7 @@
 class Bitfinex : public Exchange
 {
 public:
-    Bitfinex(const string &, const string &, int, int = 3);
+    Bitfinex(int = 10, int = 3);
     virtual ~Bitfinex() {}
 
 private:
